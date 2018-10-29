@@ -1,0 +1,5 @@
+.userInfo {
+  width: 80%;
+  overflow: hidden;
+  overflow-y: scroll;
+}

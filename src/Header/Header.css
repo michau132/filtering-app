@@ -1,19 +1,9 @@
-/* .header {
-  height: 12vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.headerContacts {
-  width: 20%;
+.headerTitle {
+  height: 70px;
+  line-height: 70px;
   background-color: #3e313c;
-  line-height: 3.5em;
   text-align: center;
-  border-right: 3px solid black;
   color: rgb(184,176,183);
   font-weight: bold;
-
+  width: 100%;
 }
-.headerInfo {
-  margin: 0 auto;
-} */

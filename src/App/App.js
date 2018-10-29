@@ -3,83 +3,76 @@ import Sidebar from '../Sidebar/Sidebar';
 import styles from './App.css';
 import UserInfo from '../UserInfo/UserInfo';
 
-
-let newContacts; let
-  contacts;
 class App extends Component {
   constructor(props) {
     super(props);
     this.contacts = [];
     this.state = {
-      searchQr: '',
       direction: 1,
       users: [],
       userCnt: [],
     };
   }
 
-  firstLetter(text) {
-    return text.charAt(0).toUpperCase() + text.slice(1);
-  }
-
   componentDidMount() {
     fetch('https://randomuser.me/api/?results=10')
       .then(response => response.json())
       .then((data) => {
-        contacts = data.results;
-        contacts.map((contact) => {
-          contact.name.first = this.firstLetter(contact.name.first);
-          contact.name.last = this.firstLetter(contact.name.last);
-        });
-
-        this.setState({ users: contacts });
+        this.contacts = data.results;
+        this.setState({ users: data.results });
       });
   }
 
-    filter =(event) => {
-      this.setState({
-        searchQr: event.target.value,
-        users: contacts.filter(item => item.name.first.match(event.target.value)
-                    || item.name.last.match(event.target.value)
-                    || item.email.match(event.target.value)),
-      });
+
+  filter =(event) => {
+    function findMatchingUser(item, value) {
+      return item.name.first.match(value) || item.name.last.match(value);
     }
 
+    const filteredUsers = this.contacts.filter(item => findMatchingUser(item, event.target.value));
+    this.setState({
+      users: filteredUsers,
+    });
+  }
 
-    sortAlphabeticByLastName = () => {
-      newContacts = this.state.users.map(item => item);
 
-      newContacts.sort((a, b) => {
-        if (a.name.last < b.name.last) return (-1 * this.state.direction);
-        if (a.name.last > b.name.last) return this.state.direction;
-        return 0;
-      });
-      this.setState({
-        users: newContacts,
-        direction: this.state.direction * -1,
-      });
-    }
+  sortAlphabeticByLastName = () => {
+    const { users, direction } = this.state;
+    const newContacts = users.map(item => item);
 
-    handler =(event) => {
-      const arr = this.state.userCnt.concat(event.props.item);
-      this.setState({ userCnt: arr });
-    }
+    newContacts.sort((a, b) => {
+      if (a.name.last < b.name.last) return (-1 * direction);
+      if (a.name.last > b.name.last) return direction;
+      return 0;
+    });
+    this.setState({
+      users: newContacts,
+      direction: direction * -1,
+    });
+  }
 
-    render() {
-      return (
-        <section className={styles.app}>
-          <Sidebar
-            users={this.state.users}
-            sortAlphabeticByLastName={this.sortAlphabeticByLastName}
-            filterHandle={this.filter}
-            handler={this.handler}
-          />
-          <UserInfo
-            userCnt={this.state.userCnt}
-          />
-        </section>
-      );
-    }
+  showMoreUserDetails =item => () => {
+    const { userCnt } = this.state;
+    const arr = userCnt.concat(item);
+    this.setState({ userCnt: arr });
+  }
+
+  render() {
+    const { users, userCnt } = this.state;
+    return (
+      <section className={styles.app}>
+        <Sidebar
+          users={users}
+          sortAlphabeticByLastName={this.sortAlphabeticByLastName}
+          filterHandle={this.filter}
+          showMoreUserDetails={this.showMoreUserDetails}
+        />
+        <UserInfo
+          userCnt={userCnt}
+        />
+      </section>
+    );
+  }
 }
 
 export default App;
