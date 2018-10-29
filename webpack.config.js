@@ -1,16 +1,28 @@
-//Konfiguracja Webpack
+// Konfiguracja Webpack
 
 module.exports = {
-    entry: "./src/index.jsx",
-    output: { filename: "./out.js" },
-    watch: true,
-    module: {
-        loaders: [
-            {
-                test: /\.jsx$/,  exclude: /node_modules/,
-                loader: 'babel',
-                query: { presets: [ 'es2015', 'stage-2', 'react'] }
-            }
-        ]
-    }
+  entry: './src/index.jsx',
+  output: {
+    filename: './out.js',
+    path: __dirname,
+  },
+  module: {
+    rules: [{
+      test: /\.jsx$/,
+      exclude: /node_modules/,
+      loader: 'babel-loader',
+      query: {
+        presets: ['env', 'react', 'stage-2'],
+      },
+    },
+    {
+      test: /\.css$/,
+      loaders: [
+        'style-loader?sourceMap',
+        'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+      ],
+    },
+    ],
+
+  },
 };
