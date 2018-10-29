@@ -1,14 +1,14 @@
 // Konfiguracja Webpack
 
 module.exports = {
-  entry: './src/index.jsx',
+  entry: './src/index.js',
   output: {
     filename: './out.js',
     path: __dirname,
   },
   module: {
     rules: [{
-      test: /\.jsx$/,
+      test: /\.js$/,
       exclude: /node_modules/,
       loader: 'babel-loader',
       query: {
