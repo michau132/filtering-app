@@ -25,11 +25,9 @@ class App extends Component {
 
 
   filter =(event) => {
-    function findMatchingUser(item, value) {
-      return item.name.first.match(value) || item.name.last.match(value);
-    }
+    const findMatchingUser = value => contact => contact.name.first.match(value) || contact.name.last.match(value);
 
-    const filteredUsers = this.contacts.filter(item => findMatchingUser(item, event.target.value));
+    const filteredUsers = this.contacts.filter(findMatchingUser(event.target.value));
     this.setState({
       users: filteredUsers,
     });
