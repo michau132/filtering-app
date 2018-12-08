@@ -3,10 +3,10 @@ import Header from '../Header/Header';
 import UserList from '../UserList/UserList';
 import styles from './UserInfo.css';
 
-const UserInfo = props => (
+const UserInfo = () => (
   <div className={styles.userInfo}>
     <Header headerTitle="More Info" />
-    <UserList {...props} />
+    <UserList />
   </div>
 );
 
